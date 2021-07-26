@@ -1,12 +1,4 @@
-<template>
-    <canvas :style="canvasCSS"
-            :width="width"
-            :height="height"
-            :canvas-id="canvasId"></canvas>
-</template>
-
-<script>
-export default {
+let mixins = {
     name: 'myCanvas',
     props: {
         canvasId: {
@@ -31,12 +23,12 @@ export default {
         },
         data: {
             type: Array,
-            default () {
+            default() {
                 return [];
             }
         }
     },
-    data () {
+    data() {
         return {
             total: 0,
             finish: 0,
@@ -44,16 +36,16 @@ export default {
         };
     },
     computed: {
-        canvasCSS () {
+        canvasCSS() {
             console.log(`width:${this.width}px;height:${this.height}px;`)
             return `width:${this.width}px;height:${this.height}px;`;
         }
     },
-    mounted () {
+    mounted() {
         if (this.automatic) this.drawStar();
     },
     methods: {
-        drawStar (data) {
+        drawStar(data) {
             if (this.drawIng) return;
             this.drawIng = true;
             console.log('drawData:', data || this.data);
@@ -118,7 +110,7 @@ export default {
                 this.drawData(canvasData);
             }
         },
-        drawData (data) {
+        drawData(data) {
             console.warn('drawData:', data);
             const ctx = uni.createCanvasContext(this.canvasId, this);
             ctx.save();
@@ -191,15 +183,15 @@ export default {
             }, 200);
 
         },
-        drawCircular (ctx, item) { //画圆
+        drawCircular(ctx, item) { //画圆
             ctx.arc(item.x, item.y, item.radius, 0, 2 * Math.PI)
             ctx.setFillStyle(item.color)
             ctx.fill()
         },
-        drawClear (ctx, item) { //清除某个区域
+        drawClear(ctx, item) { //清除某个区域
             ctx.clearRect(item.x, item.y, item.width, item.height)
         },
-        drawLine (ctx, item) { //画线
+        drawLine(ctx, item) { //画线
             let {
                 color,
                 width,
@@ -231,7 +223,7 @@ export default {
 
             ctx.stroke()
         },
-        drawText (ctx, item) {
+        drawText(ctx, item) {
             if (!item.line || item.line === 0) item.line = 1;
             if (!item.lineHeight || item.lineHeight === 0) item.lineHeight = 2; //行距
             if (!item.size) item.size = 12;
@@ -330,7 +322,7 @@ export default {
             }
         },
 
-        drawRect (ctx, item) {
+        drawRect(ctx, item) {
             console.log('rect', JSON.stringify(item))
             ctx.setFillStyle(item.color)
             if (item.rotate) ctx.rotate(item.rotate * Math.PI / 180)
@@ -339,7 +331,7 @@ export default {
             if (item.rotate) ctx.rotate(360 - item.rotate * Math.PI / 180)
             if (item.radius) this.drawRadius(ctx, item);
         },
-        drawImg (ctx, item) {
+        drawImg(ctx, item) {
             if (item.download === 0) {
                 console.log('img Not Download', JSON.stringify(item))
                 return;
@@ -371,7 +363,7 @@ export default {
 
             if (item.radius) this.drawRadius(ctx, item);
         },
-        drawRadius (ctx, item) {
+        drawRadius(ctx, item) {
             ctx.setFillStyle(item.radiusBackground || this.background)
 
             let {
@@ -435,7 +427,7 @@ export default {
             }
 
         },
-        draw (ctx, item) {
+        draw(ctx, item) {
             ctx.draw(true, setTimeout(() => {
                 item.finish = 1;
                 if (item.type !== 'extend') this.finish++;
@@ -443,5 +435,4 @@ export default {
             }, 50));
         },
     },
-}
-</script>
+};
